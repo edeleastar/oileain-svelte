@@ -1,3 +1,8 @@
+<script lang="ts">
+  import Icon from "svelte-awesome";
+  import { faGithub } from "@fortawesome/free-brands-svg-icons";
+</script>
+
 <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center uk-padding-small" uk-grid>
   <div class="uk-child-width-1-2@s uk-card uk-card-default uk-grid-collapse" uk-grid>
     <div>
@@ -14,4 +19,10 @@
       </div>
     </div>
   </div>
+  <a href="http://www.oileain.org/" title="Oileain Book Site" pos="bottom" uk-tooltip>
+    <img data-src="http://www.oileain.org/wp-content/uploads/2015/05/oileain_2X.png" width="70px" height="" alt="" uk-img />
+  </a>
+  <a href="https://github.com/wit-hdip-comp-sci-2020/oileain-svelte" title="Project Source" pos="bottom" uk-tooltip>
+    <Icon data={faGithub} scale="3" />
+  </a>
 </div>
