@@ -1,13 +1,14 @@
 <script lang="ts">
   import Icon from "svelte-awesome";
   import { faGithub } from "@fortawesome/free-brands-svg-icons";
+  export let title = "";
 </script>
 
 <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center uk-padding-small" uk-grid>
   <div class="uk-child-width-1-2@s uk-card uk-card-default uk-grid-collapse" uk-grid>
     <div>
       <div class="uk-tile uk-tile-default uk-padding-small">
-        <h2>Oileain</h2>
+        <h2>{title}</h2>
       </div>
     </div>
     <div>
