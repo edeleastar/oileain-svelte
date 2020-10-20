@@ -28,6 +28,10 @@
     "@tsconfig/svelte": "^1.0.10"
   },
   "dependencies": {
-    "sirv-cli": "^1.0.8"
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@fortawesome/free-regular-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "sirv-cli": "^1.0.8",
+    "svelte-awesome": "^2.3.0"
   }
 }
