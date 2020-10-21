@@ -20,7 +20,6 @@
   onMount(async () => {
     const response = await fetch("https://edeleastar.github.io/oileain-api/all-slim.json");
     coasts = await response.json();
-    console.log(coasts);
     map = new CoastalLeafletMap(mapDescriptor);
     map.populateCoasts(coasts);
   });
