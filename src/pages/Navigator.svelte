@@ -6,19 +6,21 @@
   
     let coasts: any[];
     let poiSelected = false;
+    let mapIdMain = "map-main"
+    let mapIdSecondary = "map-secondary"
   
     onMount(async () => {
       coasts = await getCoasts();
       coasts.forEach(coast => {
         let markerDescriptors = generateMarkerDescriptors(coast.pois)
-        poiCollection.set({ title:coast.title, markerDescriptors:markerDescriptors });
+        poiCollection.set({ mapId: mapIdMain, title:coast.title, markerDescriptors:markerDescriptors });
       })
     });
   </script>
 
 <div class="uk-text-center" uk-grid>
   <div class="uk-width-1-3@m uk-animation-scale-up">
-    <Map id="all-ireland" height={560} />
+    <Map id={mapIdMain} zoom={7} height={560} />
     {#if poiSelected}
       <div class="uk-card uk-card-default uk-card-body">
           
@@ -26,7 +28,7 @@
     {/if}
   </div>
   <div class="uk-width-expand@m uk-animation-scale-up">
-    <Map id="island-zoom" height={250} />
+    <Map id={mapIdSecondary}} height={250} />
     {#if poiSelected}
       <div class="uk-card uk-card-default uk-card-body">
           

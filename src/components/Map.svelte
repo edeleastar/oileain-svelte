@@ -41,7 +41,7 @@
   });
 
   const unsubscribe = poiCollection.subscribe((value) => {
-    if (imap) {
+    if (imap && id === value.mapId) {
       let group = L.layerGroup([]);
       value.markerDescriptors.forEach(markerDescriptor => {
         let marker = L.marker([markerDescriptor.lat, markerDescriptor.lng]);

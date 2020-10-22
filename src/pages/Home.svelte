@@ -5,12 +5,13 @@
   import { generateMarkerDescriptors, getCoasts } from "../services/poi";
 
   let coasts: any[];
+  let mapId="all-ireland-main";
 
   onMount(async () => {
     coasts = await getCoasts();
     coasts.forEach(coast => {
       let markerDescriptors = generateMarkerDescriptors(coast.pois)
-      poiCollection.set({ title:coast.title, markerDescriptors:markerDescriptors });
+      poiCollection.set({ mapId: mapId, title:coast.title, markerDescriptors:markerDescriptors });
     })
   });
 </script>
@@ -20,5 +21,5 @@
 </svelte:head>
 
 <div class="uk-container">
-  <Map id="all-ireland" height={800} />
+  <Map id={mapId} height={800} />
 </div>
