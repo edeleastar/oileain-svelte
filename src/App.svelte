@@ -1,19 +1,16 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import Map from "./components/Map.svelte";
-  import { poiCollection } from "./services/stores";
+  import Router from "svelte-spa-router";
   import Header from "./components/Header.svelte";
-  import { generateMarkerDescriptors, getCoasts } from "./services/poi";
+  import Home from "./pages/Home.svelte"
+  import Navigator from "./pages/Navigator.svelte";
+  import NotFound from "./pages/NotFound.svelte"
 
-  let coasts: any[];
+  let routes = {
+    "/": Home,
+    "/navigator" : Navigator,
+    "*": NotFound
+  };
 
-  onMount(async () => {
-    coasts = await getCoasts();
-    coasts.forEach(coast => {
-      let markerDescriptors = generateMarkerDescriptors(coast.pois)
-      poiCollection.set({ title:coast.title, markerDescriptors:markerDescriptors });
-    })
-  });
 </script>
 
 <svelte:head>
@@ -22,5 +19,5 @@
 
 <Header title="Oileain" />
 <div class="uk-container">
-  <Map height={800} />
+  <Router {routes} />
 </div>
