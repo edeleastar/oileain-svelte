@@ -1,3 +1,4 @@
+import type { MarkerDescriptor } from "./stores";
 export interface Grid {
   sheet: string;
   eastings: number;
@@ -44,4 +45,19 @@ export interface Region {
   title: string;
   id: string;
   location: Geodetic;
+}
+
+export function generateMarkerDescriptors(pois: PointOfInterest[]): MarkerDescriptor[] {
+  let markerDescriptors = [];
+  pois.forEach((poi) => {
+    markerDescriptors.push({ title: poi.name, lat: poi.coordinates.geo.lat, lng: poi.coordinates.geo.long });
+  });
+  return markerDescriptors;
+}
+
+export async function getCoasts(): Promise<Coast[]> {
+  let coasts: Coast[];
+  const response = await fetch("https://edeleastar.github.io/oileain-api/all-slim.json");
+  coasts = await response.json();
+  return coasts;
 }

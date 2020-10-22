@@ -1,18 +1,18 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Map from "./components/Map.svelte";
-  import { poiCollection } from "./components/stores";
-
+  import { poiCollection } from "./services/stores";
   import Header from "./components/Header.svelte";
+  import { generateMarkerDescriptors, getCoasts } from "./services/poi";
 
   let coasts: any[];
 
   onMount(async () => {
-    const response = await fetch("https://edeleastar.github.io/oileain-api/all-slim.json");
-    coasts = await response.json();
-    console.log(coasts);
-    poiCollection.set({ pois: coasts[0].pois });
-    poiCollection.set({ pois: coasts[1].pois });
+    coasts = await getCoasts();
+    coasts.forEach(coast => {
+      let markerDescriptors = generateMarkerDescriptors(coast.pois)
+      poiCollection.set({ title:coast.title, markerDescriptors:markerDescriptors });
+    })
   });
 </script>
 

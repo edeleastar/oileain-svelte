@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import * as L from "leaflet";
   import type { Map, Layer, LayerControl, LayersObject } from "leaflet";
-  import { poiCollection } from "./stores";
+  import { poiCollection } from "../services/stores";
 
   export let id = "home-map-id";
   export let height = 800;
@@ -42,23 +42,19 @@
 
   const unsubscribe = poiCollection.subscribe((value) => {
     if (imap) {
-      console.log("pois recieved = " + value.pois.length);
       let group = L.layerGroup([]);
-      value.pois.forEach((poi) => {
-        let marker = L.marker([poi.coordinates.geo.lat, poi.coordinates.geo.long]);
+      value.markerDescriptors.forEach(markerDescriptor => {
+        let marker = L.marker([markerDescriptor.lat, markerDescriptor.lng]);
         var newpopup = L.popup({ autoClose: false, closeOnClick: false });
-        newpopup.setContent(poi.name);
+        newpopup.setContent(markerDescriptor.title);
         marker.bindPopup(newpopup);
         marker.addTo(group);
       });
-      overlays["islands"] = group;
+      overlays[value.title] = group;
       imap.addLayer(group);
-      control.addOverlay(group, "islands");
+      control.addOverlay(group, value.title);
       imap.invalidateSize();
     }
-
-    // overlays["Islands"] = group;
-    // control.addOverlay(group, "Islands");
   });
 
   onDestroy(unsubscribe);
