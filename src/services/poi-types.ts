@@ -1,4 +1,8 @@
-import type { MarkerDescriptor } from "./stores";
+export interface Geodetic {
+  lat: number;
+  long: number;
+}
+
 export interface Grid {
   sheet: string;
   eastings: number;
@@ -8,11 +12,6 @@ export interface Grid {
 export interface FullGrid {
   eastings: number;
   northings: number;
-}
-
-export interface Geodetic {
-  lat: number;
-  long: number;
 }
 
 export interface Coordinates {
@@ -47,17 +46,17 @@ export interface Region {
   location: Geodetic;
 }
 
-export function generateMarkerDescriptors(pois: PointOfInterest[]): MarkerDescriptor[] {
-  let markerDescriptors = [];
-  pois.forEach((poi) => {
-    markerDescriptors.push({ title: poi.name, lat: poi.coordinates.geo.lat, lng: poi.coordinates.geo.long });
-  });
-  return markerDescriptors;
+export interface CoastsEvent {
+  mapid: string;
+  coasts: Array<Coast>;
+  link: boolean;
+  poiSelect: PoiSelect;
 }
 
-export async function getCoasts(): Promise<Coast[]> {
-  let coasts: Coast[];
-  const response = await fetch("https://edeleastar.github.io/oileain-api/all-slim.json");
-  coasts = await response.json();
-  return coasts;
+export interface PoiSelect {
+  onSelect(id: string): any;
+}
+export interface PoiEvent {
+  mapid: string;
+  poi: PointOfInterest;
 }
