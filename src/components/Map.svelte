@@ -1,8 +1,10 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import * as L from "leaflet";
-  import type { Map, Layer, LayerControl, LayersObject } from "leaflet";
-  import { poiCollection } from "../services/stores";
+  import type { Layer, Marker, LayerControl, LayersObject } from "leaflet";
+  import type {Map as LeafletMap} from "leaflet"
+  import  type { MarkerDescriptor } from "../services/stores";
+  import {  poiCollection } from "../services/stores";
 
   export let id = "home-map-id";
   export let height = 800;
@@ -11,9 +13,11 @@
   export let minZoom = 7;
   export let activeLayer = "";
 
-  let imap: Map;
+  let imap: LeafletMap;
   let control: LayerControl;
   let overlays: LayersObject = {};
+  let markerMap = new Map<Marker, MarkerDescriptor>();
+
   let baseLayers = {
     Terrain: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 17,
@@ -48,7 +52,11 @@
         var newpopup = L.popup({ autoClose: false, closeOnClick: false });
         newpopup.setContent(markerDescriptor.title);
         marker.bindPopup(newpopup);
-        marker.addTo(group);
+        markerMap.set(marker, markerDescriptor);
+        marker.addTo(group).on("popupopen", (event) => {
+          const marker = event.popup._source;
+          console.log(markerMap.get(marker));
+        });
       });
       overlays[value.title] = group;
       imap.addLayer(group);
