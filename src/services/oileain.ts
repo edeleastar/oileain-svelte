@@ -26,7 +26,7 @@ export class Oileain {
       return cachedPoi;
     } else {
       const path = `https://edeleastar.github.io/oileain-api/${poi.coast.variable}/${poi.safeName}.json`;
-      const response = await this.http.fetch(path);
+      const response = await fetch(path);
       const island = await response.json();
       island.safeName = poi.safeName;
       this.islandMap.set(poi.safeName, island);

@@ -11,17 +11,8 @@
 
   onMount(async () => {
     coasts = await oileain.getCoasts();
-    // coasts = await getCoasts();
-    // coasts.forEach(coast => {
-    //   let markerDescriptors = generateMarkerDescriptors(coast.pois)
-    //   poiCollection.set({ mapId: mapId, title:coast.title, markerDescriptors:markerDescriptors });
-    // })
   });
 </script>
-
-<svelte:head>
-  <title>Oileain</title>
-</svelte:head>
 
 {#if coasts}
   <div class="uk-container">

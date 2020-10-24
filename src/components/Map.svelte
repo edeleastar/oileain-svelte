@@ -1,9 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import * as L from "leaflet";
-  import type { Layer, Marker, LayerControl, LayersObject } from "leaflet";
+  import type { Layer, Marker, LayerControl, LayersObject, LayerGroup } from "leaflet";
   import type { Map as LeafletMap } from "leaflet";
-  import type { Coast, PointOfInterest } from "../services/poi-types";
+  import type { Coast, Geodetic, PointOfInterest } from "../services/poi-types";
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
 
   export let id = "home-map-id";
   export let height = 800;
@@ -39,12 +41,15 @@
     });
     addControl();
     if (coasts) {
-      console.log(coasts);
-      coasts.forEach((coast) => {
-        populateCoast(coast);
-      });
+      populateCoasts(coasts);
     }
   });
+
+  export function populateCoasts(coasts: Coast[]) {
+    coasts.forEach((coast) => {
+      populateCoast(coast);
+    });
+  }
 
   function populateCoast(coast: Coast, link: boolean = true) {
     let group = L.layerGroup([]);
@@ -59,7 +64,10 @@
       markerMap.set(marker, poi);
       marker.addTo(group).on("popupopen", (event) => {
         const marker = event.popup._source;
-        const shortPoi = this.markerMap.get(marker);
+        const shortPoi = markerMap.get(marker);
+        dispatch("message", {
+          marker: shortPoi,
+        });
       });
     });
     addLayer(coast.title, group);
@@ -72,6 +80,43 @@
   function addLayer(title: string, layer: Layer) {
     overlays[title] = layer;
     imap.addLayer(layer);
+  }
+
+  export async function populatePoi(poi: PointOfInterest) {
+    if (imap) {
+      addPopup("Islands", poi.nameHtml, poi.coordinates.geo);
+      moveTo(15, poi.coordinates.geo);
+      invalidateSize();
+    }
+  }
+
+  function invalidateSize() {
+    imap.invalidateSize();
+    let hiddenMethodMap = imap as any;
+    hiddenMethodMap._onResize();
+  }
+
+  function moveTo(zoom: number, location: Geodetic) {
+    imap.setZoom(zoom);
+    imap.panTo(new L.LatLng(location.lat, location.long));
+  }
+
+  function addPopup(layerTitle: string, content: string, location: Geodetic) {
+    let popupGroup: LayerGroup;
+    if (!overlays[layerTitle]) {
+      popupGroup = L.layerGroup([]);
+      overlays[layerTitle] = popupGroup;
+      imap.addLayer(popupGroup);
+    } else {
+      popupGroup = overlays[layerTitle] as LayerGroup;
+    }
+    const popup = L.popup({
+      closeOnClick: false,
+      closeButton: false,
+    })
+      .setLatLng({ lat: location.lat, lng: location.long })
+      .setContent(content);
+    popup.addTo(popupGroup);
   }
 </script>
 
