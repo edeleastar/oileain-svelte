@@ -1,11 +1,18 @@
 <script lang="ts">
   import Icon from "svelte-awesome";
+  import TocBtn from "./TocBtn.svelte";
   import { faGithub } from "@fortawesome/free-brands-svg-icons";
   import { faMap } from "@fortawesome/free-regular-svg-icons";
+  import { revealSidebar } from "../services/stores";
   export let title = "";
 </script>
 
 <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center uk-padding-small" uk-grid>
+  <div class="uk-padding-small">
+    <a href="#coasts-menu" uk-toggle title="Clickable list all Islands by Costal Region" pos="bottom" uk-tooltip>
+      <TocBtn />
+    </a>
+  </div>
   <div class="uk-padding-small">
     <a href="/" title="Islands of Ireland" pos="bottom" uk-tooltip>
       <Icon data={faMap} scale="3" />
