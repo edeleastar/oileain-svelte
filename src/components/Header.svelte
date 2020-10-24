@@ -1,16 +1,17 @@
 <script lang="ts">
   import Icon from "svelte-awesome";
-  import TocBtn from "./TocBtn.svelte";
   import { faGithub } from "@fortawesome/free-brands-svg-icons";
   import { faMap } from "@fortawesome/free-regular-svg-icons";
-  import { revealSidebar } from "../services/stores";
+  import { faBars, faMapMarked } from "@fortawesome/free-solid-svg-icons";
   export let title = "";
 </script>
 
 <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center uk-padding-small" uk-grid>
   <div class="uk-padding-small">
     <a href="#coasts-menu" uk-toggle title="Clickable list all Islands by Costal Region" pos="bottom" uk-tooltip>
-      <TocBtn />
+      <div title="Index of all Islands" pos="bottom" uk-tooltip>
+        <Icon data={faBars} scale="2" />
+      </div>
     </a>
   </div>
   <div class="uk-padding-small">
@@ -33,8 +34,8 @@
       </div>
     </div>
   </div>
-  <a href="/#/navigator" title="All Ireland Map" pos="bottom" uk-tooltip>
-    <Icon data={faMap} scale="3" />
+  <a href="/#/navigator" title="Explore Island Maps" pos="bottom" uk-tooltip>
+    <Icon data={faMapMarked} scale="3" />
   </a>
   <a href="http://www.oileain.org/" title="Oileain Book Site" pos="bottom" uk-tooltip>
     <img data-src="http://www.oileain.org/wp-content/uploads/2015/05/oileain_2X.png" width="70px" height="" alt="" uk-img />
