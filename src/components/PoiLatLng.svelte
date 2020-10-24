@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { PointOfInterest } from "../services/poi-types";
-
   export let poi: PointOfInterest;
 </script>
 

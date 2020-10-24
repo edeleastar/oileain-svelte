@@ -38,7 +38,7 @@
       <Map id="map-secondary" height={250} activeLayer="Satellite" bind:this={navigator} />
       {#if poi}
         <div class="uk-card uk-card-default uk-card-body">
-          <PoiDescription {poi} />\
+          <PoiDescription {poi} />
         </div>
       {:else}
         <div class="uk-card uk-card-default uk-card-body">

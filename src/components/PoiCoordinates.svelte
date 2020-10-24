@@ -1,0 +1,81 @@
+<script lang="ts">
+  import type { PointOfInterest } from "../services/poi-types";
+  export let poi: PointOfInterest;
+</script>
+
+<div class="uk-text-center uk-text-small" uk-grid>
+  <div class="uk-width-expand@m">
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+      <caption>GPS-compatible</caption>
+      <table class="uk-table uk-table-divider uk-table-small">
+        <tbody>
+          <tr>
+            <td>Latitude</td>
+            <td>{poi.coordinates.geo.lat}</td>
+          </tr>
+          <tr>
+            <td>Longitude</td>
+            <td>{poi.coordinates.geo.long}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="uk-width-1-2@m">
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+      <caption>Transverse Mercator</caption>
+      <table class="uk-table uk-table-divider uk-table-small">
+        <tbody>
+          <tr>
+            <td>Eastings</td>
+            <td>{poi.coordinates.tmcGrid.eastings}</td>
+          </tr>
+          <tr>
+            <td>Northings</td>
+            <td>{poi.coordinates.fullIrishGrid.northings}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="uk-text-center uk-text-small" uk-grid>
+  <div class="uk-width-expand@m">
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+      <caption>Full Irish Grid</caption>
+      <table class="uk-table uk-table-divider uk-table-small">
+        <tbody>
+          <tr>
+            <td>Eastings</td>
+            <td>{poi.coordinates.fullIrishGrid.eastings}</td>
+          </tr>
+          <tr>
+            <td>Northings</td>
+            <td>{poi.coordinates.fullIrishGrid.northings}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="uk-width-1-2@m">
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small">
+      <caption>Irish Grid</caption>
+      <table class="uk-table uk-table-divider uk-table-small">
+        <tbody>
+          <tr>
+            <td>Sheet</td>
+            <td>{poi.coordinates.irishGrid.sheet}</td>
+          </tr>
+          <tr>
+            <td>Eastings</td>
+            <td>{poi.coordinates.irishGrid.eastings}</td>
+          </tr>
+          <tr>
+            <td>Norhtings</td>
+            <td>{poi.coordinates.irishGrid.northings}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

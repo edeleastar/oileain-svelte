@@ -14,6 +14,7 @@
   export let minZoom = 7;
   export let activeLayer = "Terrain";
   export let coasts: Array<Coast>;
+  export let poi: PointOfInterest;
 
   let imap: LeafletMap;
   let control: LayerControl;
@@ -43,12 +44,23 @@
     if (coasts) {
       populateCoasts(coasts);
     }
+    if (poi) {
+      populatePoi(poi);
+    }
   });
 
-  export function populateCoasts(coasts: Coast[]) {
+  function populateCoasts(coasts: Coast[]) {
     coasts.forEach((coast) => {
       populateCoast(coast);
     });
+  }
+
+  export function populatePoi(poi: PointOfInterest) {
+    if (imap) {
+      addPopup("Islands", poi.nameHtml, poi.coordinates.geo);
+      moveTo(15, poi.coordinates.geo);
+      invalidateSize();
+    }
   }
 
   function populateCoast(coast: Coast, link: boolean = true) {
@@ -56,7 +68,7 @@
     coast.pois.forEach((poi) => {
       let marker = L.marker([poi.coordinates.geo.lat, poi.coordinates.geo.long]);
       var newpopup = L.popup({ autoClose: false, closeOnClick: false });
-      const popupTitle = link ? `<a href='/poi(${poi.safeName})'>${poi.name} <small>(click for details}</small></a>` : poi.name;
+      const popupTitle = link ? `<a href='/#/poi/${poi.safeName}'>${poi.name} <small>(click for details}</small></a>` : poi.name;
       newpopup.setContent(popupTitle);
       marker.bindPopup(newpopup);
       marker.bindTooltip(poi.name);
@@ -77,17 +89,10 @@
   function addControl() {
     control = L.control.layers(baseLayers, overlays).addTo(imap);
   }
+
   function addLayer(title: string, layer: Layer) {
     overlays[title] = layer;
     imap.addLayer(layer);
-  }
-
-  export async function populatePoi(poi: PointOfInterest) {
-    if (imap) {
-      addPopup("Islands", poi.nameHtml, poi.coordinates.geo);
-      moveTo(15, poi.coordinates.geo);
-      invalidateSize();
-    }
   }
 
   function invalidateSize() {
