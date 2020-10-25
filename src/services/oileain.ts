@@ -17,19 +17,15 @@ export class Oileain {
   }
 
   async getIslandById(id: string) {
-    return await this.getIsland(this.islandMap.get(id));
-  }
-
-  async getIsland(poi: PointOfInterest) {
-    let cachedPoi = await this.islandMap.get(poi.safeName);
+    let cachedPoi = await this.islandMap.get(id);
     if (cachedPoi.description) {
       return cachedPoi;
     } else {
-      const path = `https://edeleastar.github.io/oileain-api/${poi.coast.variable}/${poi.safeName}.json`;
+      const path = `https://edeleastar.github.io/oileain-api/${cachedPoi.coast.variable}/${id}.json`;
       const response = await fetch(path);
       const island = await response.json();
-      island.safeName = poi.safeName;
-      this.islandMap.set(poi.safeName, island);
+      island.safeName = id;
+      this.islandMap.set(id, island);
       return island;
     }
   }

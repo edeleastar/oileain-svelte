@@ -99,7 +99,6 @@
   }
 
   function moveTo(zoom: number, location: LatLng) {
-    console.log(location);
     imap.setZoom(zoom);
     imap.panTo(location);
   }

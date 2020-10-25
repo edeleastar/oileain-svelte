@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import type { Coast, PointOfInterest } from "../services/poi-types";
   import { generateMarkerSpec } from "../services/poi-types";
   import PoiDescription from "../components/PoiDescription.svelte";
@@ -16,16 +16,16 @@
   let marker: MarkerSpec;
   let coasts: Coast[];
   let refresh = true;
+
   onMount(async () => {
     coasts = await oileain.getCoasts();
-    poi = await oileain.getIslandById(params.wild);
+    poi = await oileain.getIslandById(encodeURI(params.wild));
     marker = generateMarkerSpec(poi);
   });
 
-  location.subscribe((value) => {
+  let unsubscribe = location.subscribe((value) => {
     if (coasts) {
       const safeName = value.substring(value.lastIndexOf("/") + 1);
-      console.log(safeName);
       oileain.getIslandById(safeName).then((foundPoi) => {
         poi = foundPoi;
         marker = generateMarkerSpec(foundPoi);
@@ -33,6 +33,8 @@
       });
     }
   });
+
+  onDestroy(unsubscribe);
 </script>
 
 {#if poi}
