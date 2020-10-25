@@ -1,3 +1,4 @@
+import type { MarkerLayer, MarkerSpec } from "./../components/markers";
 export interface Geodetic {
   lat: number;
   long: number;
@@ -40,23 +41,36 @@ export interface Coast {
   pois: Array<PointOfInterest>;
 }
 
-export interface Region {
-  title: string;
-  id: string;
-  location: Geodetic;
+export function generateMarkerSpec(poi: PointOfInterest): MarkerSpec {
+  return {
+    id: poi.safeName,
+    title: poi.name,
+    location: {
+      lat: poi.coordinates.geo.lat,
+      lng: poi.coordinates.geo.long,
+    },
+  };
 }
 
-export interface CoastsEvent {
-  mapid: string;
-  coasts: Array<Coast>;
-  link: boolean;
-  poiSelect: PoiSelect;
+export function generateMarkerSpecs(pois: Array<PointOfInterest>): MarkerSpec[] {
+  const markerSpecs = Array<MarkerSpec>();
+  pois.forEach((poi) => {
+    markerSpecs.push(generateMarkerSpec(poi));
+  });
+  return markerSpecs;
 }
 
-export interface PoiSelect {
-  onSelect(id: string): any;
+export function generateMarkerLayer(coast: Coast): MarkerLayer {
+  return {
+    title: coast.title,
+    markerSpecs: generateMarkerSpecs(coast.pois),
+  };
 }
-export interface PoiEvent {
-  mapid: string;
-  poi: PointOfInterest;
+
+export function generateMarkerLayers(coasts: Coast[]): MarkerLayer[] {
+  const markerLayers = [];
+  coasts.forEach((coast) => {
+    markerLayers.push(generateMarkerLayer(coast));
+  });
+  return markerLayers;
 }

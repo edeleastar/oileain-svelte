@@ -1,25 +1,26 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import * as L from "leaflet";
-  import type { Layer, Marker, LayerControl, LayersObject, LayerGroup } from "leaflet";
+  import type { Layer, Marker, LayerControl, LayersObject, LayerGroup, LatLng } from "leaflet";
   import type { Map as LeafletMap } from "leaflet";
-  import type { Coast, Geodetic, PointOfInterest } from "../services/poi-types";
   import { createEventDispatcher } from "svelte";
+  import type { MarkerLayer, MarkerSpec } from "./markers";
+
   const dispatch = createEventDispatcher();
 
   export let id = "home-map-id";
   export let height = 800;
-  export let location = { lat: 53.2734, long: -7.7783203 };
+  export let location = { lat: 53.2734, lng: -7.7783203 };
   export let zoom = 8;
   export let minZoom = 7;
   export let activeLayer = "Terrain";
-  export let coasts: Array<Coast>;
-  export let poi: PointOfInterest;
+  export let markerLayers: MarkerLayer[];
+  export let marker: MarkerSpec;
 
   let imap: LeafletMap;
   let control: LayerControl;
   let overlays: LayersObject = {};
-  let markerMap = new Map<Marker, PointOfInterest>();
+  let markerMap = new Map<Marker, MarkerSpec>();
 
   let baseLayers = {
     Terrain: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -35,55 +36,51 @@
   onMount(async () => {
     let defaultLayer = baseLayers[activeLayer];
     imap = L.map(id, {
-      center: [location.lat, location.long],
+      center: [location.lat, location.lng],
       zoom: zoom,
       minZoom: minZoom,
       layers: [defaultLayer],
     });
     addControl();
-    if (coasts) {
-      populateCoasts(coasts);
+    if (marker) {
+      addPopupMarkerAndZoom("default", marker);
     }
-    if (poi) {
-      populatePoi(poi);
+    if (markerLayers) {
+      markerLayers.forEach((markerLayer) => {
+        populateLayer(markerLayer);
+      });
     }
   });
 
-  function populateCoasts(coasts: Coast[]) {
-    coasts.forEach((coast) => {
-      populateCoast(coast);
-    });
-  }
-
-  export function populatePoi(poi: PointOfInterest) {
+  export function addPopupMarkerAndZoom(layer: string, marker: MarkerSpec) {
     if (imap) {
-      addPopup("Islands", poi.nameHtml, poi.coordinates.geo);
-      moveTo(15, poi.coordinates.geo);
+      addPopup(layer, marker.title, marker.location);
+      moveTo(15, marker.location);
       invalidateSize();
     }
   }
 
-  function populateCoast(coast: Coast, link: boolean = true) {
+  export function populateLayer(markerLayer: MarkerLayer) {
     let group = L.layerGroup([]);
-    coast.pois.forEach((poi) => {
-      let marker = L.marker([poi.coordinates.geo.lat, poi.coordinates.geo.long]);
+    markerLayer.markerSpecs.forEach((markerSpec) => {
+      let marker = L.marker([markerSpec.location.lat, markerSpec.location.lng]);
       var newpopup = L.popup({ autoClose: false, closeOnClick: false });
-      const popupTitle = link ? `<a href='/#/poi/${poi.safeName}'>${poi.name} <small>(click for details}</small></a>` : poi.name;
+      const popupTitle = `<a href='/#/poi/${markerSpec.id}'>${markerSpec.title} <small>(click for details}</small></a>`;
       newpopup.setContent(popupTitle);
       marker.bindPopup(newpopup);
-      marker.bindTooltip(poi.name);
+      marker.bindTooltip(markerSpec.title);
       marker.addTo(group);
-      markerMap.set(marker, poi);
+      markerMap.set(marker, markerSpec);
       marker.addTo(group).on("popupopen", (event) => {
         const marker = event.popup._source;
-        const shortPoi = markerMap.get(marker);
+        const markerSpec = markerMap.get(marker);
         dispatch("message", {
-          marker: shortPoi,
+          marker: markerSpec,
         });
       });
     });
-    addLayer(coast.title, group);
-    control.addOverlay(group, coast.title);
+    addLayer(markerLayer.title, group);
+    control.addOverlay(group, markerLayer.title);
   }
 
   function addControl() {
@@ -101,12 +98,13 @@
     hiddenMethodMap._onResize();
   }
 
-  function moveTo(zoom: number, location: Geodetic) {
+  function moveTo(zoom: number, location: LatLng) {
+    console.log(location);
     imap.setZoom(zoom);
-    imap.panTo(new L.LatLng(location.lat, location.long));
+    imap.panTo(location);
   }
 
-  function addPopup(layerTitle: string, content: string, location: Geodetic) {
+  function addPopup(layerTitle: string, content: string, location: LatLng) {
     let popupGroup: LayerGroup;
     if (!overlays[layerTitle]) {
       popupGroup = L.layerGroup([]);
@@ -119,7 +117,7 @@
       closeOnClick: false,
       closeButton: false,
     })
-      .setLatLng({ lat: location.lat, lng: location.long })
+      .setLatLng({ lat: location.lat, lng: location.lng })
       .setContent(content);
     popup.addTo(popupGroup);
   }
