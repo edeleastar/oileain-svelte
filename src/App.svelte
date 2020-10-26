@@ -6,7 +6,7 @@
   import Home from "./pages/Home.svelte";
   import Navigator from "./pages/Navigator.svelte";
   import NotFound from "./pages/NotFound.svelte";
-  import Poi from "./pages/Poi.svelte";
+  import Island from "./pages/Island.svelte";
   import { Oileain } from "./services/oileain-api";
 
   setContext("oileain", new Oileain());
@@ -14,7 +14,7 @@
   let routes = {
     "/": Home,
     "/navigator": Navigator,
-    "/poi/*": Poi,
+    "/poi/*": Island,
     "*": NotFound,
   };
 </script>

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount, getContext } from "svelte";
   import LeafletMap from "../components/LeafletMap.svelte";
-  import PoiLatLng from "../components/PoiLatLng.svelte";
-  import PoiDescription from "../components/PoiDescription.svelte";
+  import IslandLatLng from "../components/IslandLatLng.svelte";
+  import IslandDescription from "../components/IslandDescription.svelte";
   import type { Oileain } from "../services/oileain-api";
   import type { IslandGroup, Island } from "../services/oileain-types";
   import { generateMarkerSpec,generateMarkerLayers } from "../services/oileain-types";
@@ -33,7 +33,7 @@
       <LeafletMap id="map-main" zoom={7} height={560} {markerLayers} on:message={markerSelect} />
       {#if island}
         <div class="uk-card uk-card-default uk-card-body">
-          <PoiLatLng {island} />
+          <IslandLatLng {island} />
         </div>
       {/if}
     </div>
@@ -41,7 +41,7 @@
       <LeafletMap id="map-secondary" height={250} activeLayer="Satellite" bind:this={navigator} />
       {#if island}
         <div class="uk-card uk-card-default uk-card-body">
-          <PoiDescription {island} />
+          <IslandDescription {island} />
         </div>
       {:else}
         <div class="uk-card uk-card-default uk-card-body">

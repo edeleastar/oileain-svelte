@@ -4,8 +4,8 @@
   import type { Oileain } from "../services/oileain-api";
   import type { IslandGroup, Island} from "../services/oileain-types";
   import { generateMarkerSpec } from "../services/oileain-types";
-  import PoiDescription from "../components/PoiDescription.svelte";
-  import PoiCoordinates from "../components/PoiCoordinates.svelte";
+  import IslandDescription from "../components/IslandDescription.svelte";
+  import IslandCoordinates from "../components/IslandCoordinates.svelte";
   import LeafletMap from "../components/LeafletMap.svelte";
   import type { MarkerSpec } from "../components/markers";
 
@@ -42,12 +42,12 @@
       {#key refresh}
         <LeafletMap id="map-main" {marker} zoom={7} height={560} />
         <div class="uk-card uk-card-default uk-card-body">
-          <PoiCoordinates {island} />
+          <IslandCoordinates {island} />
         </div>
       {/key}
     </div>
     <div class="uk-width-1-3@m uk-animation-slide-right">
-      <PoiDescription {island} />
+      <IslandDescription {island} />
     </div>
   </div>
 {/if}
