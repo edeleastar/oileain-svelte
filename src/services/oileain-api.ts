@@ -1,12 +1,14 @@
-import type { Coast, PointOfInterest } from "./poi-types";
+import type { IslandGroup, Island } from "./oileain-types";
 
+// Cache & index island data
 export class Oileain {
+  // all island data as retrieved from API
   coasts: any[];
-  islandMap = new Map<string, PointOfInterest>();
-  coastMap = new Map<string, Coast>();
+  // indexes for fast lookup
+  islandMap = new Map<string, Island>();
+  coastMap = new Map<string, IslandGroup>();
 
-  constructor() {}
-
+  // Retrieve shallow version of all islands (without descriptions and other details)
   async getCoasts() {
     if (!this.coasts) {
       const response = await fetch("https://edeleastar.github.io/oileain-api/all-slim.json");
@@ -16,11 +18,16 @@ export class Oileain {
     return this.coasts;
   }
 
+  // Retrieve details in a single island - and cache locally
   async getIslandById(id: string) {
-    let cachedPoi = await this.islandMap.get(id);
+    // get local copy
+    let cachedPoi = this.islandMap.get(id);
+    // see if this is full version
     if (cachedPoi.description) {
+      // it is, return
       return cachedPoi;
     } else {
+      // only shalow version locally - fetch and cache full version.
       const path = `https://edeleastar.github.io/oileain-api/${cachedPoi.coast.variable}/${id}.json`;
       const response = await fetch(path);
       const island = await response.json();
@@ -30,6 +37,7 @@ export class Oileain {
     }
   }
 
+  // index all islands by id (safeName)
   createIndexes() {
     this.coasts.forEach((coast) => {
       this.coastMap.set(coast.variable, coast);

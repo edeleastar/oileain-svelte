@@ -7,7 +7,7 @@
   import Navigator from "./pages/Navigator.svelte";
   import NotFound from "./pages/NotFound.svelte";
   import Poi from "./pages/Poi.svelte";
-  import { Oileain } from "./services/oileain";
+  import { Oileain } from "./services/oileain-api";
 
   setContext("oileain", new Oileain());
 

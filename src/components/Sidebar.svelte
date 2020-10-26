@@ -1,10 +1,10 @@
 <script lang="ts">
   import { getContext, onMount } from "svelte";
-  import type { Oileain } from "../services/oileain";
-  import type { Coast } from "../services/poi-types";
+  import type { Oileain } from "../services/oileain-api";
+  import type { IslandGroup } from "../services/oileain-types";
 
   let oileain: Oileain = getContext("oileain");
-  let coasts: Array<Coast>;
+  let coasts: Array<IslandGroup>;
 
   onMount(async () => {
     coasts = await oileain.getCoasts();
@@ -20,8 +20,8 @@
           <li class="uk-parent">
             <a href="#">{coast.title}</a>
             <ul class="uk-nav-sub">
-              {#each coast.pois as poi}
-                <li><a href="/#/poi/{poi.safeName}"> {poi.name}</a></li>
+              {#each coast.pois as island}
+                <li><a href="/#/poi/{island.safeName}"> {island.name}</a></li>
               {/each}
             </ul>
           </li>

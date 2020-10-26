@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { PointOfInterest } from "../services/poi-types";
-  export let poi: PointOfInterest;
+  import type { Island } from "../services/oileain-types";
+  export let island: Island;
 </script>
 
 <div class="uk-card uk-card-default uk-card-body uk-padding-small">
@@ -9,11 +9,11 @@
     <tbody>
       <tr>
         <td>Latitude</td>
-        <td>{poi.coordinates.geo.lat}</td>
+        <td>{island.coordinates.geo.lat}</td>
       </tr>
       <tr>
         <td>Longitude</td>
-        <td>{poi.coordinates.geo.long}</td>
+        <td>{island.coordinates.geo.long}</td>
       </tr>
     </tbody>
   </table>

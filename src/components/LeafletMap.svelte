@@ -1,10 +1,23 @@
+<script context="module" lang="ts">
+export interface MarkerSpec {
+  id: string;
+  title: string;
+  location: LatLng;
+}
+
+export interface MarkerLayer {
+  title: string;
+  markerSpecs: MarkerSpec[];
+}
+</script>
+
 <script lang="ts">
   import { onMount } from "svelte";
   import * as L from "leaflet";
   import type { Layer, Marker, LayerControl, LayersObject, LayerGroup, LatLng } from "leaflet";
   import type { Map as LeafletMap } from "leaflet";
   import { createEventDispatcher } from "svelte";
-  import type { MarkerLayer, MarkerSpec } from "./markers";
+  import type { MarkerLayer, MarkerSpec } from "../markers";
 
   const dispatch = createEventDispatcher();
 

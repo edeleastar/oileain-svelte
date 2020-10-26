@@ -1,18 +1,16 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, getContext } from "svelte";
   import LeafletMap from "../components/LeafletMap.svelte";
   import PoiLatLng from "../components/PoiLatLng.svelte";
   import PoiDescription from "../components/PoiDescription.svelte";
-  import { getContext } from "svelte";
-  import type { Oileain } from "../services/oileain";
-  import type { Coast, PointOfInterest } from "../services/poi-types";
-  import { generateMarkerSpec } from "../services/poi-types";
+  import type { Oileain } from "../services/oileain-api";
+  import type { IslandGroup, Island } from "../services/oileain-types";
+  import { generateMarkerSpec,generateMarkerLayers } from "../services/oileain-types";
   import type { MarkerLayer } from "../components/markers";
-  import { generateMarkerLayers } from "../services/poi-types";
 
   let oileain: Oileain = getContext("oileain");
-  let coasts: Array<Coast>;
-  let poi: PointOfInterest;
+  let coasts: Array<IslandGroup>;
+  let island: Island;
   let navigator: LeafletMap;
   let markerLayers = Array<MarkerLayer>();
 
@@ -22,9 +20,9 @@
   });
 
   function markerSelect(event) {
-    oileain.getIslandById(event.detail.marker.id).then((poiSelected) => {
-      poi = poiSelected;
-      navigator.addPopupMarkerAndZoom("selected", generateMarkerSpec(poi));
+    oileain.getIslandById(event.detail.marker.id).then((islandSelected) => {
+      island = islandSelected;
+      navigator.addPopupMarkerAndZoom("selected", generateMarkerSpec(island));
     });
   }
 </script>
@@ -33,17 +31,17 @@
   <div class="uk-text-center" uk-grid>
     <div class="uk-width-1-3@m uk-animation-scale-up">
       <LeafletMap id="map-main" zoom={7} height={560} {markerLayers} on:message={markerSelect} />
-      {#if poi}
+      {#if island}
         <div class="uk-card uk-card-default uk-card-body">
-          <PoiLatLng {poi} />
+          <PoiLatLng {island} />
         </div>
       {/if}
     </div>
     <div class="uk-width-expand@m uk-animation-scale-up">
       <LeafletMap id="map-secondary" height={250} activeLayer="Satellite" bind:this={navigator} />
-      {#if poi}
+      {#if island}
         <div class="uk-card uk-card-default uk-card-body">
-          <PoiDescription {poi} />
+          <PoiDescription {island} />
         </div>
       {:else}
         <div class="uk-card uk-card-default uk-card-body">

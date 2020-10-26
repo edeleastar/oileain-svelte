@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { PointOfInterest } from "../services/poi-types";
-  export let poi: PointOfInterest;
+  import type { Island } from "../services/oileain-types";
+  export let island: Island;
 </script>
 
 <div class="uk-text-center uk-text-small" uk-grid>
@@ -11,11 +11,11 @@
         <tbody>
           <tr>
             <td>Latitude</td>
-            <td>{poi.coordinates.geo.lat}</td>
+            <td>{island.coordinates.geo.lat}</td>
           </tr>
           <tr>
             <td>Longitude</td>
-            <td>{poi.coordinates.geo.long}</td>
+            <td>{island.coordinates.geo.long}</td>
           </tr>
         </tbody>
       </table>
@@ -28,11 +28,11 @@
         <tbody>
           <tr>
             <td>Eastings</td>
-            <td>{poi.coordinates.tmcGrid.eastings}</td>
+            <td>{island.coordinates.tmcGrid.eastings}</td>
           </tr>
           <tr>
             <td>Northings</td>
-            <td>{poi.coordinates.fullIrishGrid.northings}</td>
+            <td>{island.coordinates.fullIrishGrid.northings}</td>
           </tr>
         </tbody>
       </table>
@@ -47,11 +47,11 @@
         <tbody>
           <tr>
             <td>Eastings</td>
-            <td>{poi.coordinates.fullIrishGrid.eastings}</td>
+            <td>{island.coordinates.fullIrishGrid.eastings}</td>
           </tr>
           <tr>
             <td>Northings</td>
-            <td>{poi.coordinates.fullIrishGrid.northings}</td>
+            <td>{island.coordinates.fullIrishGrid.northings}</td>
           </tr>
         </tbody>
       </table>
@@ -64,15 +64,15 @@
         <tbody>
           <tr>
             <td>Sheet</td>
-            <td>{poi.coordinates.irishGrid.sheet}</td>
+            <td>{island.coordinates.irishGrid.sheet}</td>
           </tr>
           <tr>
             <td>Eastings</td>
-            <td>{poi.coordinates.irishGrid.eastings}</td>
+            <td>{island.coordinates.irishGrid.eastings}</td>
           </tr>
           <tr>
             <td>Norhtings</td>
-            <td>{poi.coordinates.irishGrid.northings}</td>
+            <td>{island.coordinates.irishGrid.northings}</td>
           </tr>
         </tbody>
       </table>

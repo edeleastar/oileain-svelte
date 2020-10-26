@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { PointOfInterest } from "../services/poi-types";
-  export let poi: PointOfInterest;
+  import type { Island } from "../services/oileain-types";
+  export let island: Island;
 </script>
 
 <div class="ui segment">
   <div class="description">
-    {@html poi.description}
+    {@html island.description}
   </div>
 </div>
