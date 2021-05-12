@@ -1,23 +1,12 @@
-<script context="module" lang="ts">
-export interface MarkerSpec {
-  id: string;
-  title: string;
-  location: LatLng;
-}
-
-export interface MarkerLayer {
-  title: string;
-  markerSpecs: MarkerSpec[];
-}
-</script>
-
 <script lang="ts">
   import { onMount } from "svelte";
   import * as L from "leaflet";
-  import type { Layer, Marker, LayerControl, LayersObject, LayerGroup, LatLng } from "leaflet";
+  import type { Layer, Marker, LayerGroup, LatLng } from "leaflet";
   import type { Map as LeafletMap } from "leaflet";
   import { createEventDispatcher } from "svelte";
-  import type { MarkerLayer, MarkerSpec } from "../markers";
+  import type { MarkerLayer, MarkerSpec } from "./markers";
+  import { Control } from "leaflet";
+  import LayersObject = Control.LayersObject;
 
   const dispatch = createEventDispatcher();
 
@@ -31,7 +20,7 @@ export interface MarkerLayer {
   export let marker: MarkerSpec;
 
   let imap: LeafletMap;
-  let control: LayerControl;
+  let control: any;
   let overlays: LayersObject = {};
   let markerMap = new Map<Marker, MarkerSpec>();
 
@@ -84,7 +73,7 @@ export interface MarkerLayer {
       marker.bindTooltip(markerSpec.title);
       marker.addTo(group);
       markerMap.set(marker, markerSpec);
-      marker.addTo(group).on("popupopen", (event) => {
+      marker.addTo(group).on("popupopen", (event:any) => {
         const marker = event.popup._source;
         const markerSpec = markerMap.get(marker);
         dispatch("message", {

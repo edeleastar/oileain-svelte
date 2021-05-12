@@ -58,7 +58,7 @@ export interface IslandGroup {
 // Converter functions to generate Leaflet marker compatible collections
 // from above data structures
 export function generateMarkerSpec(island: Island): MarkerSpec {
-  return {
+  return <MarkerSpec>{
     id: island.safeName,
     title: island.name,
     location: {
