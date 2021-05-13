@@ -5,8 +5,7 @@
   import type { Map as LeafletMap } from "leaflet";
   import { createEventDispatcher } from "svelte";
   import type { MarkerLayer, MarkerSpec } from "./markers";
-  import { Control } from "leaflet";
-  import LayersObject = Control.LayersObject;
+  import type { Control } from "leaflet";
 
   const dispatch = createEventDispatcher();
 
@@ -20,8 +19,8 @@
   export let marker: MarkerSpec;
 
   let imap: LeafletMap;
-  let control: any;
-  let overlays: LayersObject = {};
+  let control: Control.Layers;
+  let overlays: Control.LayersObject = {};
   let markerMap = new Map<Marker, MarkerSpec>();
 
   let baseLayers = {
